@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<project basedir="." default="all">
+  <taskdef name="jscomp" classname="com.google.javascript.jscomp.ant.CompileTask" 
+    classpath="lib/google_closure_compiler.jar"/>       
+  <target name="all" depends="videosketch, min" />
+  <target name="dev" depends="videosketch, min, css"/>  
+    <target name="videosketch">    
+    <concat destfile="videosketch.js">    
+      <fileset file="src/videosketch.js"/>
+      <fileset file="src/util.js"/>      
+      <fileset file="src/editor.js"/>
+      <fileset file="src/path.js"/>
+      <fileset file="src/sketch.js"/>
+      <fileset file="src/renderer.js"/>
+      <fileset file="src/thumbnail.js"/>   
+    </concat>    
+  </target>  
+  <target name="min">    
+    <jscomp compilationLevel="simple" warning="default" 
+      debug="false" output="videosketch.min.js"> 
+      <sources dir="${basedir}">
+        <file name="videosketch.js"/>
+      </sources >
+    </jscomp>
+  </target>  
+	<target name="css" description="CSSembed">
+		<exec executable="java" output="videosketch.css">
+			<arg line="-jar lib/cssembed-0.3.3.jar videosketch-no-embed.css" />
+		</exec>
+	</target>
+</project>

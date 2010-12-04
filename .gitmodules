@@ -1,0 +1,3 @@
+[submodule "lib/glint"]
+	path = lib/glint
+	url = git://github.com/mmchaney/glint.git
