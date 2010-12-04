@@ -4,7 +4,7 @@
     classpath="lib/google_closure_compiler.jar"/>       
   <target name="all" depends="videosketch, min" />
   <target name="dev" depends="videosketch, min, css"/>  
-    <target name="videosketch">    
+  <target name="videosketch">    
     <concat destfile="videosketch.js">    
       <fileset file="src/videosketch.js"/>
       <fileset file="src/util.js"/>      
