@@ -50,11 +50,9 @@
   videosketch.Renderer.prototype = {
 
     setCanvasSize: function (width, height) {
-      this.frontCanvas.width = this.backCanvas.width = this.width = width;
-      this.frontCanvas.height = this.backCanvas.height = this.height = height;
-
+      this.frontCanvas.width = this.backCanvas.width = this.width = parseInt(width, 10);
+      this.frontCanvas.height = this.backCanvas.height = this.height =  parseInt(height, 10);
       videosketch.Renderer.normalizeContext(this.frontContext);
-
       if (this.sketch) {
         this.renderAll();
       }
@@ -112,7 +110,9 @@
 
     renderPaths: function () {
       this.clear();
-      this.sketch.paths.forEach(this.renderPath, this);
+      if (this.sketch && this.sketch.paths) {
+        this.sketch.paths.forEach(this.renderPath, this);
+      }
     },
 
     renderPath: function (path) {
@@ -190,8 +190,8 @@
         // Needed because canvas elements don't resize according to their width/height ratio (unlike images).
         image = videosketch.util.makeElement('img');
         image.src = videosketch.util.makeElement('canvas', {
-          width: 50,
-          height: 50 / aspectRatio
+          width: 800,
+          height: parseInt(800 / aspectRatio, 10)
         }).toDataURL();
         this.container.appendChild(image);
 

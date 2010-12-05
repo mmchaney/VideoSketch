@@ -242,8 +242,7 @@ test('videosketch.Renderer.normalizeContext', function () {
   }
 
 });
-/*
-* FIXME: Leaving this test out for now as it's intermittently failing.
+
 test('videosketch.Renderer.preserveAspectRatio', function () {
   var fixture = document.querySelector('#qunit-fixture');
   var fixtureWidth = 800;
@@ -277,4 +276,3 @@ test('videosketch.Renderer.preserveAspectRatio', function () {
   equal((fixtureBox.width - rendererBox.width) / 2, rendererBox.left - fixtureBox.left);
   equal((fixtureBox.width - rendererBox.width) / 2, fixtureBox.right - rendererBox.right);
 });
-*/

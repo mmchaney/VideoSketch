@@ -184,7 +184,6 @@ bitwise: true, regexp: true, newcap: true, immed: true, maxlen: 120, indent: 2 *
 
     this.video = (video.play) ? video : document.querySelector(video);
     this.container = this.video.parentNode;
-    this.container.tabIndex = this.container.tabindex || -1;
 
     this.container.classList.add('vs-container');
 
@@ -312,8 +311,13 @@ bitwise: true, regexp: true, newcap: true, immed: true, maxlen: 120, indent: 2 *
 
     editSketch: function (sketch) {
       this.video.pause();
-      this.seekingFrame = true;      
-      this.video.currentTime = sketch.timestamp;
+      this.seekingFrame = true;  
+      
+      try {    
+        this.video.currentTime = sketch.timestamp;
+      } catch (error) {        
+        /* Video not ready */ 
+      }
 
       this.sketchpad.attachSketch(sketch);
       this.sketch = sketch;
@@ -728,11 +732,9 @@ bitwise: true, regexp: true, newcap: true, immed: true, maxlen: 120, indent: 2 *
   videosketch.Renderer.prototype = {
 
     setCanvasSize: function (width, height) {
-      this.frontCanvas.width = this.backCanvas.width = this.width = width;
-      this.frontCanvas.height = this.backCanvas.height = this.height = height;
-
+      this.frontCanvas.width = this.backCanvas.width = this.width = parseInt(width, 10);
+      this.frontCanvas.height = this.backCanvas.height = this.height =  parseInt(height, 10);
       videosketch.Renderer.normalizeContext(this.frontContext);
-
       if (this.sketch) {
         this.renderAll();
       }
@@ -790,7 +792,9 @@ bitwise: true, regexp: true, newcap: true, immed: true, maxlen: 120, indent: 2 *
 
     renderPaths: function () {
       this.clear();
-      this.sketch.paths.forEach(this.renderPath, this);
+      if (this.sketch && this.sketch.paths) {
+        this.sketch.paths.forEach(this.renderPath, this);
+      }
     },
 
     renderPath: function (path) {
@@ -868,8 +872,8 @@ bitwise: true, regexp: true, newcap: true, immed: true, maxlen: 120, indent: 2 *
         // Needed because canvas elements don't resize according to their width/height ratio (unlike images).
         image = videosketch.util.makeElement('img');
         image.src = videosketch.util.makeElement('canvas', {
-          width: 50,
-          height: 50 / aspectRatio
+          width: 800,
+          height: parseInt(800 / aspectRatio, 10)
         }).toDataURL();
         this.container.appendChild(image);
 
@@ -967,7 +971,7 @@ bitwise: true, regexp: true, newcap: true, immed: true, maxlen: 120, indent: 2 *
     this.sketchpad = new videosketch.Renderer({
       parent: this.container,
       width: 300,
-      height: 300 / options.aspectRatio,
+      height: parseInt(300 / options.aspectRatio, 10),
       sketch: options.sketch
     });
     

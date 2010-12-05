@@ -13,7 +13,6 @@
 
     this.video = (video.play) ? video : document.querySelector(video);
     this.container = this.video.parentNode;
-    this.container.tabIndex = this.container.tabindex || -1;
 
     this.container.classList.add('vs-container');
 
@@ -141,8 +140,13 @@
 
     editSketch: function (sketch) {
       this.video.pause();
-      this.seekingFrame = true;      
-      this.video.currentTime = sketch.timestamp;
+      this.seekingFrame = true;  
+      
+      try {    
+        this.video.currentTime = sketch.timestamp;
+      } catch (error) {        
+        /* Video not ready */ 
+      }
 
       this.sketchpad.attachSketch(sketch);
       this.sketch = sketch;

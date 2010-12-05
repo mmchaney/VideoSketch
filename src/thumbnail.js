@@ -21,7 +21,7 @@
     this.sketchpad = new videosketch.Renderer({
       parent: this.container,
       width: 300,
-      height: 300 / options.aspectRatio,
+      height: parseInt(300 / options.aspectRatio, 10),
       sketch: options.sketch
     });
     
