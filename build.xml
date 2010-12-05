@@ -3,7 +3,7 @@
   <taskdef name="jscomp" classname="com.google.javascript.jscomp.ant.CompileTask" 
     classpath="lib/google_closure_compiler.jar"/>       
   <target name="all" depends="videosketch, min" />
-  <target name="dev" depends="videosketch, min, css"/>  
+  <target name="dev" depends="videosketch, min, css, copy"/>  
   <target name="videosketch">    
     <concat destfile="videosketch.js">    
       <fileset file="src/videosketch.js"/>
@@ -28,4 +28,10 @@
 			<arg line="-jar lib/cssembed-0.3.3.jar videosketch-no-embed.css" />
 		</exec>
 	</target>
+  <target name="copy">
+    <copy file="videosketch.js" todir="../personal/videosketch" />
+    <copy file="videosketch.css" todir="../personal/videosketch" />
+    <copy file="lib/glint/glint.js" todir="../personal/videosketch" />
+    <copy file="lib/glint/glint.css" todir="../personal/videosketch" />
+  </target>	
 </project>
