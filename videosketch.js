@@ -177,7 +177,11 @@ bitwise: true, regexp: true, newcap: true, immed: true, maxlen: 120, indent: 2 *
   // Main editor class
   // -----------------
 
-  videosketch.Editor = function (video) {
+  videosketch.Editor = function (video, glint) {
+    
+    // Set optional reference to a glint player.
+    // VideoSketch uses glint notification system if present.
+    this.glint = glint;
 
     // Holds editor DOM
     var fragment = document.createDocumentFragment();
@@ -324,6 +328,9 @@ bitwise: true, regexp: true, newcap: true, immed: true, maxlen: 120, indent: 2 *
 
       if (this.inactive) {
         this.drawing = true;
+        if (this.glint) {         
+          this.glint.showNotice(); 
+        }
       }
     },
 
@@ -397,13 +404,19 @@ bitwise: true, regexp: true, newcap: true, immed: true, maxlen: 120, indent: 2 *
       if (this.inactive) {
         this.video.pause();
         this.createSketch();
+      } else if (this.erasing) {
+        this.drawing = true; 
+        if (this.glint) {
+          this.glint.showNotice(); 
+        }              
       }
-
-      this.drawing = true;
     },
 
     onEraserControlClick: function (event) {
       this.erasing = this.erasing || this.drawing;
+      if (this.glint && this.erasing) {
+        this.glint.showNotice(); 
+      }
     },
 
     onClearControlClick: function () {
@@ -521,8 +534,8 @@ bitwise: true, regexp: true, newcap: true, immed: true, maxlen: 120, indent: 2 *
     });
   });
 
-  videosketch.setup = function (video) {
-    return new videosketch.Editor(video);
+  videosketch.setup = function (video, glint) {
+    return new videosketch.Editor(video, glint);
   };
 
 }(this));
